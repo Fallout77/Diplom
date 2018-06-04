@@ -35,16 +35,17 @@ $url = $VASILYNO['url'];
 <table class="tbl_form" border="1">
 <tbody>
 <tr><th>#id</th><td><?=$material['id']?></td></tr>
-<tr><th>Название материала:</th><td><?=$material_now['name']?></td></tr>
-<tr><th>Цена продукта:</th><td><?=$material_now['price_product']?></td></tr>
-<tr><th>Цена за грамм:</th><td><?=$material_now['price_per_gram_product']?></td></tr>
-<tr><th>Объем на складе:</th><td><?=$material_now['volume_in_storage']?></td></tr>
-<tr><th>Информация:</th><td><?=$material_now['discription']?></td></tr>
+<tr><th>Название материала:</th><td><?=$material['name']?></td></tr>
+<tr><th>Цена продукта:</th><td><?=$material['price_product']?></td></tr>
+<tr><th>Цена за грамм:</th><td><?=$material['price_per_gram_product']?></td></tr>
+<tr><th>Объем на складе:</th><td><?=$material['volume_in_storage']?></td></tr>
+<tr><th>Код материала:</th><td><?=$material['material_code']?></td></tr>
+<tr><th>Информация:</th><td class="medium"><?=nl2br($material['description'])?></td></tr>
 </tbody>
 </table>
 
 <div class="mt20">
-[<a class="admin" title="Редактировать данные о материале" href="<?=$url?>.material_form.<?=$material_now['id_material']?>">Редактировать</a>]
+[<a class="admin" title="Редактировать данные о материале" href="<?=$url?>.material_form.<?=$material['id']?>">Редактировать</a>]
 </div>
 
 <div class="mt20">

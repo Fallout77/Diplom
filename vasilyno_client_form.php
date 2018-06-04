@@ -46,11 +46,11 @@ else $action = "new";
 
 <table class="tbl_form" border=1>
 <tbody>
-<tr><th>ФИО клиента:<span class="red">*</span></th><td><input required type='text' name='name' value='<?=$client['name']?>' style="width: 400px;" /></td></tr>
-<tr><th>Дата рождения:</th><td><input placeholder='ДД.ММ.ГГГГ' type='text' name='birthday' value='<?=VASILYNO_print_date ($client['birthday'])?>' style="width: 200px;" /></td></tr>
-<tr><th>Email:</th><td><input type='text' name='email' value='<?=$client['email']?>' style="width: 400px;" /></td></tr>
-<tr><th>Телефон:</th><td><input type='text' name='phone' value='<?=$client['phone']?>' style="width: 400px;" /></td></tr>
-<tr><th>Дополнительная <br />информация:</th><td><textarea name="note" style="width: 400px; height: 100px;"><?=$client['note']?></textarea></td></tr>
+<tr><th>ФИО клиента:<span class="red">*</span></th><td><input required type='text' name='name'  autocomplete="off" value='<?=$client['name']?>' style="width: 400px;" /></td></tr>
+<tr><th>Дата рождения:</th><td><input placeholder='ДД.ММ.ГГГГ' type='date' name='birthday'  autocomplete="off" value='<?=VASILYNO_print_date ($client['birthday'])?>' style="width: 200px;" /></td></tr>
+<tr><th>Email:</th><td><input type='email' name='email'  autocomplete="off" value='<?=$client['email']?>' style="width: 400px;" /></td></tr>
+<tr><th>Телефон:</th><td><input type="tel" aria-invalid="false" aria-required="true" placeholder="Телефон +7(___)___-__-__" title="Номер должен содержать 11 цифр и начинаться с +7 или 8" value='<?=$client['phone']?>' style="width: 400px;" pattern="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10,10}$" maxlength='15' name='Phone'  autocomplete="off" /></td></tr>
+<tr><th>Дополнительная <br />информация:</th><td><textarea name="note"  autocomplete="off" style="width: 400px; height: 100px;"><?=$client['note']?></textarea></td></tr>
 </tbody>
 </table>
 
