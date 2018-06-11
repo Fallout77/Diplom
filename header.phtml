@@ -1,0 +1,178 @@
+<?php
+
+// *** Переменные шаблона
+$tpl_path = "{$template['path']}/{$template['current']}";
+$tpl_css  = "$tpl_path/{$template['current']}.css";
+$img_path  = "$tpl_path/img";
+
+// *** параметры (подгружаемые файлы) плагинов
+
+$plugins['jquery']		= array('js' => array( 'http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'));
+$plugins['fancybox']	= array('css' => array( 'js/fancybox/jquery.fancybox-1.3.4.css'), 'js'  => array( 'js/fancybox/jquery.fancybox-1.3.4.pack.js', 'js/fancybox/fancybox_init.js'));
+$plugins['multifile']	= array('js' => array( 'js/jquery/jquery.multifile.pack.js'));
+
+// по-умоланию обязательные файлы для модуля имя_модуля.css и имя_модуля.js
+$plugins[$sph['module']]['js'][] = "$tpl_path/{$sph['module']}/js/{$sph['module']}.js";
+$plugins[$sph['module']]['css'][] = "$tpl_path/{$sph['module']}/css/{$sph['module']}.css";
+$HTML['plugins'][] = $sph['module'];
+
+// по-умоланию обязательные файлы для экшена имя_модуля_имя_экшена.css и имя_модуля_имя_экшена.js
+$plugins[$sph['module']. '_' . $sph['action']]['js'][] = "$tpl_path/{$sph['module']}/js/{$sph['module']}_{$sph['action']}.js";
+$plugins[$sph['module']. '_' . $sph['action']]['css'][] = "$tpl_path/{$sph['module']}/css/{$sph['module']}_{$sph['action']}.css";
+$HTML['plugins'][] = $sph['module']. '_' . $sph['action'];
+
+?>
+
+<html>
+<head>
+
+<title><?=$HTML['TITLE']?></title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="ru-RU" />
+<meta name="viewport" content="width=device-width" />
+<meta name="Author" content="EC Labs." />
+<meta name="Generator" content="Gedit 3.18.3 Gnome/Ubuntu Linux 16.04 LTS" />
+<? /* <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> */ ?>
+<? /* <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7,IE=edge" /> */ ?>
+<? /* <link rel="alternate" type="application/rss+xml" title="" href=""/> */ ?>
+<? /* <link rel="shortcut icon" href="/favicon.ico"> */ ?>
+<? /* <meta name="Description" content=""> */ ?>
+<? /* <meta name="Keywords" content=""> */ ?>
+
+<? if (file_exists ($tpl_css)): ?>
+<!-- '<?=$template['current']?>' template base css -->
+<link href="<?=$tpl_css?>" type="text/css" rel="stylesheet" />
+<? endif; ?>
+<link href="<?=$tpl_path?>/kravtsova.css" type="text/css" rel="stylesheet" />
+
+<?
+/* ***** Подключение css плагинов ***** */
+if (!empty($HTML['plugins'])):
+	foreach ($HTML['plugins'] as $plugin) :
+		if (!empty($plugins[$plugin]['css'])) :
+			echo "\n<!-- $plugin -->";
+			foreach ($plugins[$plugin]['css'] as $plugfile) :
+				if (strpos($plugfile, '://')) :
+					echo "<link href='$plugfile' type='text/css' rel='stylesheet' />";
+				elseif (file_exists($plugfile)) :
+					echo "<link href='$plugfile' type='text/css' rel='stylesheet' />";
+				endif ;
+            endforeach ;
+        elseif (substr($plugin, -3) == '.js') :
+			echo "\n<!-- $plugin -->";
+            //if (strpos($plugin, '://') || file_exists($plugin)) echo "\n<script type='text/javascript' src='$plugin'></script>";
+            if (file_exists($plugin)) echo "\n<link href='/$plugin' type='text/css' rel='stylesheet' />";
+        endif ;
+    endforeach ;
+endif; 
+?>
+
+
+<!-- javascripts -->
+<?
+//print_pre ($HTML['plugins']);
+/* ***** Подключение js файлов плагинов ***** */
+if (!empty($HTML['plugins'])) :
+	foreach ($HTML['plugins'] as $plugin) :
+		if (!empty($plugins[$plugin]['js'])) :
+			echo "\n<!-- $plugin -->";
+			foreach ($plugins[$plugin]['js'] as $plugfile) :
+				if (strpos($plugfile, '://')) :
+					echo "\n<script type='text/javascript' src='$plugfile'></script>";
+				elseif (file_exists($plugfile)) :
+					echo "\n<script type='text/javascript' src='$plugfile'></script>";
+				endif ;
+			endforeach ;
+        elseif (substr($plugin, -4) == '.css') :
+			echo "\n<!-- $plugin -->";
+            //if (strpos($plugin, '://') || file_exists($plugin)) echo "\n<script type='text/javascript' src='$plugin'></script>";
+            if (file_exists($plugin)) echo "\n<script type='text/javascript' src='/$plugin'></script>";
+		endif ;
+	endforeach ;
+endif ;
+?>
+
+<script src="js/sph.js"></script>
+<!-- /javascripts -->
+<script type="text/javascript">
+   jQuery(function($){
+   $("#phone").mask("+7(999) 999-9999");
+   });
+</script>
+</head>
+
+<body>
+
+<? /* ***** <content_head> ***** */ ?>
+<? if (!$template['content_head_off']) : ?>
+
+<!-- header -->
+<header>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr valign="top">
+<td>
+<div class="big bold"><?=$sph["username"]?></div>
+
+<? /* Включение счетчиков */ ?>
+<? module_action ("online", "session_write"); ?>
+</td>
+
+<td align="right">
+
+<? if ($user["current"]=="guest") : ?>
+Вы не <a href="<?=$sph[core]?>?id=login">авторизовались</a>.
+<? else : ?>
+Вы авторизовались как <? print_neticon ($user['current']); ?> <a href="<?=$sph['core']?>?id=login" class="bold"><?=$user[$user['current']]['name']?></a> [<a href="#" onclick="_.confirm('Вы собираетесь выйти из системы. Продолжить?', '<?=$sph['core']?>?id=login.exit.OK')">Выход</a>]
+<? endif ; ?>
+
+<? if (is_in_group("sphadmins")) : ?>
+<br />
+<a href="<?=$sph['core']?>?id=logview">Сист. журнал</a> /
+<!--<a href="<?=$sph['core']?>?id=read.admin">Упр. страницами</a>-->
+<? endif ; ?>
+</td>
+</tr>
+</table>
+
+<hr>
+</header>
+<!-- /header -->
+
+<!-- nav -->
+<nav>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr valign="top">
+<td class="medium">
+
+<b>Меню</b>: <a href="<?=$sph['core']?>">Титульная</a>
+<? if (is_in_group("vasilyno_admins") || is_in_group("vasilyno_users")) : ?>
+ / <a href="<?=$sph['core']?>?id=vasilyno.client">Клиенты</a>
+ / <a href="<?=$sph['core']?>?id=vasilyno.material">Расх. материалы</a>
+ / <a href="<?=$sph['core']?>?id=vasilyno.master">Мастера</a>
+ / <a href="<?=$sph['core']?>?id=vasilyno.service_type">Сервисы</a>
+ / <a href="<?=$sph['core']?>?id=vasilyno.brand">Бренды</a>
+ / <a href="<?=$sph['core']?>?id=vasilyno.service_category">Профессии</a>
+ / <a href="<?=$sph['core']?>?id=vasilyno.category_material">Категории</a>
+<? endif ; ?>
+
+
+</td><td class="medium" align="right" valign="bottom">
+     
+</td>
+</tr>
+</table>
+
+<hr>
+</nav>
+<!-- /nav -->
+        
+
+<? endif ; ?>
+<? /* ***** </content_head> ***** */ ?>
+
+<!-- content -->
+<section id="<?=$sph['module']?>-<?=$sph['action']?>">
+<!-- <?=$sph['module']?> <?=$sph['action']?> -->
+
+

@@ -6,7 +6,7 @@
 
 	MODULE: vasilyno
 	TYPE:   action
-	FILE:   vasilyno_material.php
+	FILE:   vasilyno_client.php
 	AUTHOR: andreas, 03/2018
 	DESCRIPTION: vasilyno module for Vasily V. Novikov
 */
@@ -32,14 +32,14 @@ if ($_POST["action"])
 	}
 	//...................................................................
 	// *** Добавление или редактирование
-	$query = "INSERT INTO `{$VASILYNO['db_material']}` SET $sql_str ON DUPLICATE KEY UPDATE $sql_str";
+	$query = "INSERT INTO `{$VASILYNO['db_service_type']}` SET $sql_str ON DUPLICATE KEY UPDATE $sql_str";
 	//print_pre ($query);
 	$result = sql_query ($query);
 	if (sql_aff_rows() > 0)
 	{
 		if (!$_POST['id']) $_POST['id'] = sql_last_id ();
 		
-		$warning = "Данные о материале #{$_POST['id']} [{$_POST['name']}] сохранены в БД";
+		$warning = "Данные о сервисе #{$_POST['id']} [{$_POST['name_service_type']}] сохранены в БД";
 		if ($VASILYNO['log'] ) sql_log_write ($warning, $module['current'], $module['action'], 'VASILYNO_MATERIAL_SAVE');
 	}
 	else $error = "Запись не сохранена в БД";
@@ -50,14 +50,14 @@ $del = (int) $_GET["del"];
 
 if ($del)
 {
-	$query  = "DELETE FROM `{$VASILYNO['db_material']}` WHERE `id`='{$del}' LIMIT 1";
+	$query  = "DELETE FROM `{$VASILYNO['db_service_type']}` WHERE `id`='{$del}' LIMIT 1";
 	$result = sql_query ($query);
 	if (sql_aff_rows() > 0)
 	{
-		$warning = "Материал #$del успешно удален";
+		$warning = "Сервис #$del успешно удален";
 		if ($VASILYNO['log']) sql_log_write ($warning, $module['current'], $module['action'], 'VASILYNO_MATERIAL_DEL');
 	}
-	else $error = "Не удалось удалить материал #$del";
+	else $error = "Не удалось удалить сервис #$del";
 }
 
 
@@ -68,7 +68,7 @@ if ($str) $WHERE = "AND `$search` LIKE '%$str%'";
 
 // сортировка
 $order = sql_clear ($_GET["order"]);
-if (!$order) $order = "name";
+if (!$order) $order = "name_service_type";
 $SORT = "ORDER BY `$order` ASC";
 
 // работа со страницами
@@ -79,14 +79,14 @@ if (!$lines_on_page) $lines_on_page = $VASILYNO['clients_on_page'];
 $limit = ($page * $lines_on_page) - $lines_on_page;
 
 // запрос в БД
-$query  = "SELECT * FROM `{$VASILYNO['db_material']}` WHERE 1 $WHERE $SORT LIMIT $limit,$lines_on_page";
+$query  = "SELECT * FROM `{$VASILYNO['db_service_type']}` WHERE 1 $WHERE $SORT LIMIT $limit,$lines_on_page";
 //print_pre ($query);
 $result = sql_query ($query);
 $total_view = mysqli_num_rows ($result);
-if ($total_view > 0) $array_material = sql_to_array ($result);
+if ($total_view > 0) $array_service_type = sql_to_array ($result);
 
 // сколько всего
-$total = sql_get_num ($VASILYNO['db_material']);
+$total = sql_get_num ($VASILYNO['db_service_type']);
 //-$total_activ = sql_get_num ($VASILYNO['db_client'], "status", 10);
 //-$total_ingroup = sql_get_num ($VASILYNO['db_client'], "", "", "AND `group`!='0'");
 
@@ -103,8 +103,8 @@ $total = sql_get_num ($VASILYNO['db_material']);
 <?
 
 $url = $VASILYNO['url'];
-$url_sort = "{$VASILYNO['url']}.material&search=$search&str=$str";
-$url_page = "{$VASILYNO['url']}.material&search=$search&str=$str&order=$order";
+$url_sort = "{$VASILYNO['url']}.service_type&search=$search&str=$str";
+$url_page = "{$VASILYNO['url']}.service_type&search=$search&str=$str&order=$order";
 
 ?>
 
@@ -113,8 +113,8 @@ $url_page = "{$VASILYNO['url']}.material&search=$search&str=$str&order=$order";
 <? if ($warning) print_warning ($warning); ?>
 </div>
 
-<form action="/?id=vasilyno.material" method="GET">
-<input type='hidden' name='id' value="vasilyno.material" />
+<form action="/?id=vasilyno.service_type" method="GET">
+<input type='hidden' name='id' value="vasilyno.service_type" />
 <input type='hidden' name='order' value="<?=$order?>" />
 <input type='hidden' name='mode' value="<?=$mode?>" />
 
@@ -137,9 +137,8 @@ function VASILYNO_search ($name1, $name2)
 <tr>
 	<td>
 		<select name='search'>
-			<? VASILYNO_search ("name_material", "Название материала") ?>
-			<!--<? VASILYNO_search ("volume_in_storage", "Объем на складе") ?>-->
-			<? VASILYNO_search ("price_product", "Цена продукта") ?>
+			<? VASILYNO_search ("name_service_type", "Сервис") ?>
+			<? VASILYNO_search ("price", "Цена") ?>
 		</select>
 	</td>
 	<td><input type='text' name='str' value='<?=$str?>' style='width: 400px;' /></td>
@@ -157,7 +156,7 @@ function VASILYNO_search ($name1, $name2)
 
 <!--
 <div class="mt20 mb20">
-<b>Всего</b> клиентов: <?=$total?>
+<b>Всего</b> мастеров: <?=$total?>
 </div>
 
 <div class="mb20">
@@ -169,24 +168,20 @@ function VASILYNO_search ($name1, $name2)
 <thead>
 <tr>
 	<th><a href="<?=$url_sort?>&order=id">#</a><? if ($order=="id") echo "▼"; ?></th>
-	<th><a href="<?=$url_sort?>&order=name_material">Название материала</a><? if ($order=="name_material") echo "▼"; ?></th>
-    <th><a href="<?=$url_sort?>&order=price_product">Цена продукта</a><? if ($order=="price_product") echo "▼"; ?></th>
-	<th>Цена за грамм</th>
-    <th>Код материала</th>
+	<th><a href="<?=$url_sort?>&order=name_service_type">Сервис</a><? if ($order=="name_service_type") echo "▼"; ?></th>
+    <th><a href="<?=$url_sort?>&order=price">Цена</a><? if ($order=="price") echo "▼"; ?></th>
 	<th>ADMIN</th>
 </tr>
 </thead>
 
 <tbody>
-<? if ($total_view) : /* Если есть материалы */ ?>
-<? foreach ($array_material as $material) : ?>
+<? if ($total_view) : /* Если есть мастера */ ?>
+<? foreach ($array_service_type as $service_type) : ?>
 <tr>
-	<td class="tbl_id"><?=$material['id']?></td>
-	<td><a href="<?=$url?>.material_view.<?=$material['id']?>"><?=$material['name_material']?></a></td>
-	<td><?=$material['price_product']?></td>
-	<td><?=$material['price_per_gram_product']?></td>
-	<td><?=$material['material_code']?></td>
-	<td class="tbl_admin">[<a href="<?=$url?>.material_form.<?=$material['id']?>">Редактировать</a>]&nbsp;&nbsp;[<a href="#" onclick="_.confirm('Материал #<?=$material['id']?> `<?=$material['name_material']?>` будет удален. Продолжить?', '<?="{$url_page}&lines={$lines_on_page}&del={$material['id']}"?>')">Удалить</a>]</td>
+	<td class="tbl_id"><?=$service_type['id']?></td>
+	<td><a href="<?=$url?>.service_type_view.<?=$service_type['id']?>"><?=$service_type['name_service_type']?></a></td>
+	<td><?=$service_type['price']?></td>
+	<td class="tbl_admin">[<a href="<?=$url?>.service_type_form.<?=$service_type['id']?>">Редактировать</a>]&nbsp;&nbsp;[<a href="#" onclick="_.confirm('Сервис #<?=$service_type['id']?> `<?=$service_type['name_service_type']?>` будет удален. Продолжить?', '<?="{$url_page}&lines={$lines_on_page}&del={$service_type['id']}"?>')">Удалить</a>]</td>
 </tr>
 <? endforeach ; ?>
 <? else : /* Если нет материалов */ ?>
@@ -199,11 +194,11 @@ function VASILYNO_search ($name1, $name2)
 </table>
 
 <div class="mt20">
-[<a class="admin" href="<?=$url?>.material_form">Добавить</a>]
-</div>
+[<a class="admin" href="<?=$url?>.service_type_form">Добавить</a>]
+</div> 
 
 <div class="mt20 mb20">
-<b>Всего</b> материалов: <?=$total?>, из них показано: <?=$total_view?>, страница: <?=$page?>
+<b>Всего</b> сервисов: <?=$total?>, из них показано: <?=$total_view?>, страница: <?=$page?>
 </div>
 
 <div class="mt10">

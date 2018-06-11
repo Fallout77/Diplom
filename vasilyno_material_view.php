@@ -30,15 +30,14 @@ $url = $VASILYNO['url'];
 
 <? html_title2 ($HTML['TITLE']) ?>
 <!--<? html_title3 ("Просмотр сведений о материале") ?>-->
-<? html_title3 (VASILYNO_short_name ($material['name'])) ?>
+<? html_title3 (VASILYNO_short_name ($material['name_material'])) ?>
 
 <table class="tbl_form" border="1">
 <tbody>
 <tr><th>#id</th><td><?=$material['id']?></td></tr>
-<tr><th>Название материала:</th><td><?=$material['name']?></td></tr>
+<tr><th>Название материала:</th><td><?=$material['name_material']?></td></tr>
 <tr><th>Цена продукта:</th><td><?=$material['price_product']?></td></tr>
 <tr><th>Цена за грамм:</th><td><?=$material['price_per_gram_product']?></td></tr>
-<tr><th>Объем на складе:</th><td><?=$material['volume_in_storage']?></td></tr>
 <tr><th>Код материала:</th><td><?=$material['material_code']?></td></tr>
 <tr><th>Информация:</th><td class="medium"><?=nl2br($material['description'])?></td></tr>
 </tbody>

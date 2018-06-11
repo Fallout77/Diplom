@@ -46,7 +46,7 @@ else $action = "new";
 
 <table class="tbl_form" border=1>
 <tbody>
-<tr><th>Мастер:<span class="red">*</span></th><td><input required type='text' name='name'  autocomplete="off" value='<?=$master['name']?>' style="width: 400px;" /></td></tr>
+<tr><th>Мастер:<span class="red">*</span></th><td><input required type='text' name='name_master'  autocomplete="off" value='<?=$master['name_master']?>' style="width: 400px;" /></td></tr>
 <tr><th>Направленность муж/жен:</th><td><input type='text' name='sex' list="sex" autocomplete="off" value='<?=$master['sex']?>' style="width: 400px;" /></td></tr>
   <datalist id="sex">
 	<option value="Мужское">
