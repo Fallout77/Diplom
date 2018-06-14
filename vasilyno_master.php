@@ -39,7 +39,7 @@ if ($_POST["action"])
 	{
 		if (!$_POST['id']) $_POST['id'] = sql_last_id ();
 		
-		$warning = "Данные о мастере #{$_POST['id']} [{$_POST['name_master']}] сохранены в БД";
+		$warning = "Данные о мастере #{$_POST['id']} [{$_POST['name']}] сохранены в БД";
 		if ($VASILYNO['log'] ) sql_log_write ($warning, $module['current'], $module['action'], 'VASILYNO_MATERIAL_SAVE');
 	}
 	else $error = "Запись не сохранена в БД";
@@ -137,8 +137,9 @@ function VASILYNO_search ($name1, $name2)
 <tr>
 	<td>
 		<select name='search'>
-			<? VASILYNO_search ("name_master", "Мастер") ?>
+			<? VASILYNO_search ("name", "Мастер") ?>
 			<? VASILYNO_search ("sex", "Направленность") ?>
+			<? VASILYNO_search ("specialty", "Специальность") ?>
 		</select>
 	</td>
 	<td><input type='text' name='str' value='<?=$str?>' style='width: 400px;' /></td>
@@ -168,8 +169,9 @@ function VASILYNO_search ($name1, $name2)
 <thead>
 <tr>
 	<th><a href="<?=$url_sort?>&order=id">#</a><? if ($order=="id") echo "▼"; ?></th>
-	<th><a href="<?=$url_sort?>&order=name">Мастер</a><? if ($order=="name_master") echo "▼"; ?></th>
+	<th><a href="<?=$url_sort?>&order=name">Мастер</a><? if ($order=="name") echo "▼"; ?></th>
     <th><a href="<?=$url_sort?>&order=sex">Направленность</a><? if ($order=="sex") echo "▼"; ?></th>
+	<th>Специальность</th>
 	<th>Телефон</th>
     <th>График работы</th>
 	<th>ADMIN</th>
@@ -181,11 +183,12 @@ function VASILYNO_search ($name1, $name2)
 <? foreach ($array_master as $master) : ?>
 <tr>
 	<td class="tbl_id"><?=$master['id']?></td>
-	<td><a href="<?=$url?>.master_view.<?=$master['id']?>"><?=$master['name_master']?></a></td>
+	<td><a href="<?=$url?>.master_view.<?=$master['id']?>"><?=$master['name']?></a></td>
 	<td><?=$master['sex']?></td>
+	<td><?=$master['specialty']?></td>
 	<td><?=$master['phone']?></td>
     <td><?=nl2br($master['working_time'])?></td>
-	<td class="tbl_admin">[<a href="<?=$url?>.master_form.<?=$master['id']?>">Редактировать</a>]&nbsp;&nbsp;[<a href="#" onclick="_.confirm('Материал #<?=$master['id']?> `<?=$master['name_master']?>` будет удален. Продолжить?', '<?="{$url_page}&lines={$lines_on_page}&del={$master['id']}"?>')">Удалить</a>]</td>
+	<td class="tbl_admin">[<a href="<?=$url?>.master_form.<?=$master['id']?>">EDIT</a>]&nbsp;&nbsp;[<a href="#" onclick="_.confirm('Материал #<?=$master['id']?> `<?=$master['name']?>` будет удален. Продолжить?', '<?="{$url_page}&lines={$lines_on_page}&del={$master['id']}"?>')">DEL</a>]</td>
 </tr>
 <? endforeach ; ?>
 <? else : /* Если нет материалов */ ?>

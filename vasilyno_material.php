@@ -6,7 +6,7 @@
 
 	MODULE: vasilyno
 	TYPE:   action
-	FILE:   vasilyno_material.php
+	FILE:   vasilyno_client.php
 	AUTHOR: andreas, 03/2018
 	DESCRIPTION: vasilyno module for Vasily V. Novikov
 */
@@ -137,9 +137,9 @@ function VASILYNO_search ($name1, $name2)
 <tr>
 	<td>
 		<select name='search'>
-			<? VASILYNO_search ("name_material", "Название материала") ?>
-			<!--<? VASILYNO_search ("volume_in_storage", "Объем на складе") ?>-->
-			<? VASILYNO_search ("price_product", "Цена продукта") ?>
+			<? VASILYNO_search ("name", "Название материала") ?>
+			<? VASILYNO_search ("group_of_mat", "Группа материала") ?>
+			<? VASILYNO_search ("price_ed", "Цена материала") ?>
 		</select>
 	</td>
 	<td><input type='text' name='str' value='<?=$str?>' style='width: 400px;' /></td>
@@ -169,10 +169,11 @@ function VASILYNO_search ($name1, $name2)
 <thead>
 <tr>
 	<th><a href="<?=$url_sort?>&order=id">#</a><? if ($order=="id") echo "▼"; ?></th>
-	<th><a href="<?=$url_sort?>&order=name_material">Название материала</a><? if ($order=="name_material") echo "▼"; ?></th>
-    <th><a href="<?=$url_sort?>&order=price_product">Цена продукта</a><? if ($order=="price_product") echo "▼"; ?></th>
-	<th>Цена за грамм</th>
-    <th>Код материала</th>
+	<th><a href="<?=$url_sort?>&order=name">Название материала</a><? if ($order=="name") echo "▼"; ?></th>
+    <th><a href="<?=$url_sort?>&order=price_ed">Цена</a><? if ($order=="price_ed") echo "▼"; ?></th>
+	<th>Объем</th>
+	<th>Коэффициент</th>
+    <th>Группа материалов</th>
 	<th>ADMIN</th>
 </tr>
 </thead>
@@ -182,11 +183,12 @@ function VASILYNO_search ($name1, $name2)
 <? foreach ($array_material as $material) : ?>
 <tr>
 	<td class="tbl_id"><?=$material['id']?></td>
-	<td><a href="<?=$url?>.material_view.<?=$material['id']?>"><?=$material['name_material']?></a></td>
-	<td><?=$material['price_product']?></td>
-	<td><?=$material['price_per_gram_product']?></td>
-	<td><?=$material['material_code']?></td>
-	<td class="tbl_admin">[<a href="<?=$url?>.material_form.<?=$material['id']?>">Редактировать</a>]&nbsp;&nbsp;[<a href="#" onclick="_.confirm('Материал #<?=$material['id']?> `<?=$material['name_material']?>` будет удален. Продолжить?', '<?="{$url_page}&lines={$lines_on_page}&del={$material['id']}"?>')">Удалить</a>]</td>
+	<td><a href="<?=$url?>.material_view.<?=$material['id']?>"><?=$material['name']?></a></td>
+	<td><?=$material['price_ed']?></td>
+	<td><?=$material['volume']?></td>
+	<td><?=$material['coeff']?></td>
+	<td><?=$material['group_of_mat']?></td>
+	<td class="tbl_admin">[<a href="<?=$url?>.material_form.<?=$material['id']?>">EDIT</a>]&nbsp;&nbsp;[<a href="#" onclick="_.confirm('Материал #<?=$material['id']?> `<?=$material['name']?>` будет удален. Продолжить?', '<?="{$url_page}&lines={$lines_on_page}&del={$material['id']}"?>')">DEL</a>]</td>
 </tr>
 <? endforeach ; ?>
 <? else : /* Если нет материалов */ ?>

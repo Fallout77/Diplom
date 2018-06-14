@@ -30,13 +30,14 @@ $url = $VASILYNO['url'];
 
 <? html_title2 ($HTML['TITLE']) ?>
 <!--<? html_title3 ("Просмотр сведений о мастерах") ?>-->
-<? html_title3 (VASILYNO_short_name ($master['name_master'])) ?>
+<? html_title3 (VASILYNO_short_name ($master['name'])) ?>
 
 <table class="tbl_form" border="1">
 <tbody>
 <tr><th>#id</th><td><?=$master['id']?></td></tr>
-<tr><th>Мастер:</th><td><?=$master['name_master']?></td></tr>
+<tr><th>Мастер:</th><td><?=$master['name']?></td></tr>
 <tr><th>Направленность:</th><td><?=$master['sex']?></td></tr>
+<tr><th>Специальность:</th><td><?=$master['specialty']?></td></tr>
 <tr><th>Телефон:</th><td><?=$master['phone']?></td></tr>
 <tr><th>График работы:</th><td class="medium"><?=nl2br($master['working_time'])?></td></tr>
 </tbody>

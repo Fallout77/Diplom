@@ -46,11 +46,11 @@ else $action = "new";
 
 <table class="tbl_form" border=1>
 <tbody>
-<tr><th>Название материала:<span class="red">*</span></th><td><input required type='text' name='name_material'  autocomplete="off" value='<?=$material['name_material']?>' style="width: 400px;" /></td></tr>
-<tr><th>Цена продукта:</th><td><input type='text' name='price_product'  autocomplete="off" value='<?=$material['price_product']?>' style="width: 400px;" /></td></tr>
-<tr><th>Цена за грамм:</th><td><input type='text' name='price_per_gram_product'  autocomplete="off" value='<?=$material['price_per_gram_product']?>' style="width: 400px;" /></td></tr>
-<tr><th>Код материала:</th><td><input type='text' name='material_code'  autocomplete="off" value='<?=$material['material_code']?>' style="width: 400px;" /></td></tr>
-<tr><th>Информация:</th><td><textarea name="description"  autocomplete="off" style="width: 400px; height: 100px;"><?=$material['description']?></textarea> </td></tr>
+<tr><th>Название материала:<span class="red">*</span></th><td><input required type='text' name='name' value='<?=$material['name']?>' style="width: 400px;" /></td></tr>
+<tr><th>Группа материалов:</th><td><input type='text' name='group_of_mat' value='<?=$material['group_of_mat']?>' style="width: 400px;" /></td></tr>
+<tr><th>Объем:</th><td><input type='text' name='volume' value='<?=$material['volume']?>' style="width: 400px;" /></td></tr>
+<tr><th>Цена:</th><td><input type='text' name='price_ed' value='<?=$material['price_ed']?>' style="width: 400px;" /></td></tr>
+<tr><th>Коэффициент:</th><td><input name='coeff' value='<?=$material['coeff']?>' style="width: 400px;"/> </td></tr>
 </tbody>
 </table>
 

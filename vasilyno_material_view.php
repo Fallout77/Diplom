@@ -30,16 +30,16 @@ $url = $VASILYNO['url'];
 
 <? html_title2 ($HTML['TITLE']) ?>
 <!--<? html_title3 ("Просмотр сведений о материале") ?>-->
-<? html_title3 (VASILYNO_short_name ($material['name_material'])) ?>
+<? html_title3 (VASILYNO_short_name ($material['name'])) ?>
 
 <table class="tbl_form" border="1">
 <tbody>
 <tr><th>#id</th><td><?=$material['id']?></td></tr>
-<tr><th>Название материала:</th><td><?=$material['name_material']?></td></tr>
-<tr><th>Цена продукта:</th><td><?=$material['price_product']?></td></tr>
-<tr><th>Цена за грамм:</th><td><?=$material['price_per_gram_product']?></td></tr>
-<tr><th>Код материала:</th><td><?=$material['material_code']?></td></tr>
-<tr><th>Информация:</th><td class="medium"><?=nl2br($material['description'])?></td></tr>
+<tr><th>Название материала:</th><td><?=$material['name']?></td></tr>
+<tr><th>Группа материалов:</th><td><?=$material['group_of_mat']?></td></tr>
+<tr><th>Объем:</th><td><?=$material['volume']?></td></tr>
+<tr><th>Цена:</th><td><?=$material['price_ed']?></td></tr>
+<tr><th>Коэффициент:</th><td><?=$material['coeff']?></td></tr>
 </tbody>
 </table>
 

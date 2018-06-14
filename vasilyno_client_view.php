@@ -48,7 +48,7 @@ if ($client['birthday'] != "0000-00-00") echo " (". VASILYNO_print_old ($client[
 </table>
 
 <div class="mt20">
-[<a class="admin" title="Редактировать данные о клиенте" href="<?=$url?>.client_form.<?=$client['id']?>">Редактировать</a>]
+[<a class="admin" title="Редактировать данные о студенте" href="<?=$url?>.client_form.<?=$client['id']?>">Редактировать</a>]
 </div>
 
 <div class="mt20">
